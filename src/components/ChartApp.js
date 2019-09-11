@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './Header';
-import {Line} from 'react-chartjs-2';
+import {Line,Bar} from 'react-chartjs-2';
 
 export default class ChartApp extends React.Component{
     constructor(props){
@@ -18,19 +18,17 @@ export default class ChartApp extends React.Component{
 
     handleFlaskTemperatureApi(){
         const count = this.state.count;
-        const borderColor = "purple"
+        const darkGoldenrod = "#B8860B";
+        const borderColor = darkGoldenrod;
         fetch('http://localhost:5000/temperature/'+count)
         .then(res => res.json())
         .then((receivedData) => {
             let yValues = []
             let label = "Temperature"
-            console.log(yValues);
             for(let i=0;i<count;i++){
                 if(receivedData[i].y)
                     yValues.push(receivedData[i].y)
                 else{
-                    // console.log(i)
-                    // console.log(receivedData[i])
                     // console.log(yValues[yValues.length-1])
                     yValues.push(yValues[yValues.length-1])
                 }
@@ -41,19 +39,17 @@ export default class ChartApp extends React.Component{
 
     handleFlaskSpeedApi(){
         const count = this.state.count;
-        const borderColor = "black"
+        const navajoWhite = "#FFDEAD";
+        const borderColor = navajoWhite;
         fetch('http://localhost:5000/speed/'+count)
         .then(res => res.json())
         .then((receivedData) => {
             let yValues = []
             let label = "Speed"
-            console.log(yValues);
             for(let i=0;i<count;i++){
                 if(receivedData[i].y)
                     yValues.push(receivedData[i].y)
                 else{
-                    // console.log(i)
-                    // console.log(receivedData[i])
                     // console.log(yValues[yValues.length-1])
                     yValues.push(yValues[yValues.length-1])
                 }
@@ -70,13 +66,10 @@ export default class ChartApp extends React.Component{
         .then((receivedData) => {
             let yValues = []
             let label = "Fuel"
-            console.log(yValues);
             for(let i=0;i<count;i++){
                 if(receivedData[i].y)
                     yValues.push(receivedData[i].y)
                 else{
-                    // console.log(i)
-                    // console.log(receivedData[i])
                     // console.log(yValues[yValues.length-1])
                     yValues.push(yValues[yValues.length-1])
                 }
@@ -90,6 +83,7 @@ export default class ChartApp extends React.Component{
             label:label,
             fill:false,
             borderColor:borderColor,
+            backgroundColor : borderColor,
             data:yValues
         }
         let datasets = this.state.datasets
@@ -99,6 +93,34 @@ export default class ChartApp extends React.Component{
             labels:this.setHorizontalValues(),
             datasets:datasets
         }
+
+        // let options = { 
+        //                 legend: {
+        //                     labels: {
+        //                         fontColor: "white",
+        //                         fontSize: 18
+        //                     }
+        //                 },
+        //                 scales: {
+        //                     yAxes: [{
+        //                         ticks: {
+        //                             fontColor: "white",
+        //                             fontSize: 18,
+        //                             stepSize: 1,
+        //                             beginAtZero: true
+        //                         }
+        //                     }],
+        //                     xAxes: [{
+        //                         ticks: {
+        //                             fontColor: "white",
+        //                             fontSize: 14,
+        //                             stepSize: 1,
+        //                             beginAtZero: true
+        //                         }
+        //                     }]
+        //                 }
+        //             }
+
         this.setState(()=>({
             data:data,
             datasets:datasets
@@ -126,66 +148,74 @@ export default class ChartApp extends React.Component{
         this.handleFlaskTemperatureApi();
         this.handleFlaskSpeedApi();
         this.handleFlaskFuelApi();
-
-        // fetch("https://jsonplaceholder.typicode.com/users")
-        // .then(res => res.json())
-        // .then((receivedData)=>{
-        //     let size = receivedData.length
-        //     let longitudeValues = []
-        //     let latitudeValues = []
-        //     let borderColor = "purple"
-        //     let label = "Longitudes"
-        //     for(let i=0;i<size;i++){
-        //         longitudeValues.push(Math.floor(receivedData[i].address.geo.lng));
-        //         latitudeValues.push(Math.floor(receivedData[i].address.geo.lat));            
-        //     }
-        //     this.addGraphData(longitudeValues,borderColor,label)
-        //     this.addGraphData(latitudeValues,"cyan","Latitudes")
-        // }).catch(console.log)
-
-        // const data = {
-        //     labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        //     labels: [1, "febr", 'March', 'April', 'May', 'June', 'July'],
-        //     datasets: [
-        //       {
-        //         label: 'My First dataset',
-        //         fill: false,
-        //         lineTension: 0.1,
-        //         backgroundColor: 'rgba(75,192,192,0.4)',
-        //         borderColor: 'rgba(75,192,192,1)',
-        //         borderCapStyle: 'butt',
-        //         borderDash: [],
-        //         borderDashOffset: 0.0,
-        //         borderJoinStyle: 'miter',
-        //         pointBorderColor: 'rgba(75,192,192,1)',
-        //         pointBackgroundColor: '#fff',
-        //         pointBorderWidth: 1,
-        //         pointHoverRadius: 5,
-        //         pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-        //         pointHoverBorderColor: 'rgba(220,220,220,1)',
-        //         pointHoverBorderWidth: 2,
-        //         pointRadius: 1,
-        //         pointHitRadius: 10,
-        //         data: [65, 59, 80, 81, 56, 55, 40]
-        //       },
-        //       {
-        //         label: 'Age',
-        //         fill: false,
-        //         borderColor:"yellow",
-        //         data: [50, 9, 8, 181, 67, 75]
-        //       }
-        //     ]
-        //   };
-        // this.setState(()=>({data:data}))
     }
         
     render(){
         return (
             <div>
                 <Header></Header>
-                <div className="App" style={{ height: 800 }}>
-                    <Line ref="chart" data={this.state.data} />
-                    {/* <Line ref="chart" data={data} /> */}
+                <div className="container chart" style={{ height: 800 }}>
+                    <Line ref="chart" data={this.state.data}
+                        options = {{ 
+                            legend: {
+                                labels: {
+                                    fontColor: "white",
+                                    fontSize: 18
+                                }
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        fontColor: "white",
+                                        // fontSize: 18,
+                                        // stepSize: 1,
+                                        // beginAtZero: true
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: "white",
+                                        // fontSize: 14,
+                                        // stepSize: 1,
+                                        // beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }}
+                    />
+                    
+                    <Bar
+                        data={this.state.data} 
+                        // width={100}
+                        // height={50}
+                        // options={{ maintainAspectRatio: false }}
+                        options = {{ 
+                            legend: {
+                                labels: {
+                                    fontColor: "white",
+                                    fontSize: 18
+                                }
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        fontColor: "white",
+                                        // fontSize: 18,
+                                        // stepSize: 1,
+                                        // beginAtZero: true
+                                    }
+                                }],
+                                xAxes: [{
+                                    ticks: {
+                                        fontColor: "white",
+                                        // fontSize: 14,
+                                        // stepSize: 1,
+                                        // beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }}
+                    />
                 </div>				
             </div>
         );
