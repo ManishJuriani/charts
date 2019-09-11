@@ -1,5 +1,6 @@
 import React from 'react';
 import Header from './Header';
+import ChartRouter from '../routers/ChartRouter'
 import {Line,Bar} from 'react-chartjs-2';
 
 export default class ChartApp extends React.Component{
@@ -9,7 +10,8 @@ export default class ChartApp extends React.Component{
             count:30,
             data: {},
             datasets: [],
-            xValues:[]
+            xValues:[],
+            options: {}
         }
         this.handleFlaskTemperatureApi = this.handleFlaskTemperatureApi.bind(this)
         this.handleFlaskSpeedApi = this.handleFlaskSpeedApi.bind(this)
@@ -94,36 +96,39 @@ export default class ChartApp extends React.Component{
             datasets:datasets
         }
 
-        // let options = { 
-        //                 legend: {
-        //                     labels: {
-        //                         fontColor: "white",
-        //                         fontSize: 18
-        //                     }
-        //                 },
-        //                 scales: {
-        //                     yAxes: [{
-        //                         ticks: {
-        //                             fontColor: "white",
-        //                             fontSize: 18,
-        //                             stepSize: 1,
-        //                             beginAtZero: true
-        //                         }
-        //                     }],
-        //                     xAxes: [{
-        //                         ticks: {
-        //                             fontColor: "white",
-        //                             fontSize: 14,
-        //                             stepSize: 1,
-        //                             beginAtZero: true
-        //                         }
-        //                     }]
-        //                 }
-        //             }
+        let options = { 
+                        legend: {
+                            labels: {
+                                fontColor: "white",
+                                fontSize: 18
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    fontColor: "white"
+                                    ,
+                                    fontSize: 18,
+                                    // stepSize: 1,
+                                    // beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                ticks: {
+                                    fontColor: "white"
+                                    ,
+                                    fontSize: 14,
+                                    // stepSize: 1,
+                                    // beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
 
         this.setState(()=>({
             data:data,
-            datasets:datasets
+            datasets:datasets,
+            options:options
         }))
     }
 
@@ -141,9 +146,6 @@ export default class ChartApp extends React.Component{
     }
 
     componentWillMount(){
-
-        const labels=[]
-
         // Call to all api 
         this.handleFlaskTemperatureApi();
         this.handleFlaskSpeedApi();
@@ -153,35 +155,10 @@ export default class ChartApp extends React.Component{
     render(){
         return (
             <div>
-                <Header></Header>
+                <ChartRouter></ChartRouter>
                 <div className="container chart" style={{ height: 800 }}>
                     <Line ref="chart" data={this.state.data}
-                        options = {{ 
-                            legend: {
-                                labels: {
-                                    fontColor: "white",
-                                    fontSize: 18
-                                }
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        fontColor: "white",
-                                        // fontSize: 18,
-                                        // stepSize: 1,
-                                        // beginAtZero: true
-                                    }
-                                }],
-                                xAxes: [{
-                                    ticks: {
-                                        fontColor: "white",
-                                        // fontSize: 14,
-                                        // stepSize: 1,
-                                        // beginAtZero: true
-                                    }
-                                }]
-                            }
-                        }}
+                        options={this.state.options}
                     />
                     
                     <Bar
@@ -189,32 +166,7 @@ export default class ChartApp extends React.Component{
                         // width={100}
                         // height={50}
                         // options={{ maintainAspectRatio: false }}
-                        options = {{ 
-                            legend: {
-                                labels: {
-                                    fontColor: "white",
-                                    fontSize: 18
-                                }
-                            },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        fontColor: "white",
-                                        // fontSize: 18,
-                                        // stepSize: 1,
-                                        // beginAtZero: true
-                                    }
-                                }],
-                                xAxes: [{
-                                    ticks: {
-                                        fontColor: "white",
-                                        // fontSize: 14,
-                                        // stepSize: 1,
-                                        // beginAtZero: true
-                                    }
-                                }]
-                            }
-                        }}
+                        options= {this.state.options}
                     />
                 </div>				
             </div>
