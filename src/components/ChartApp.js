@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from './Header';
 import ChartRouter from '../routers/ChartRouter'
 import {Line,Bar} from 'react-chartjs-2';
 
@@ -13,9 +12,9 @@ export default class ChartApp extends React.Component{
             xValues:[],
             options: {}
         }
-        this.handleFlaskTemperatureApi = this.handleFlaskTemperatureApi.bind(this)
-        this.handleFlaskSpeedApi = this.handleFlaskSpeedApi.bind(this)
-        this.handleFlaskFuelApi = this.handleFlaskFuelApi.bind(this)
+        // this.handleFlaskTemperatureApi = this.handleFlaskTemperatureApi.bind(this)
+        // this.handleFlaskSpeedApi = this.handleFlaskSpeedApi.bind(this)
+        // this.handleFlaskFuelApi = this.handleFlaskFuelApi.bind(this)
     }
 
     handleFlaskTemperatureApi(){
@@ -155,8 +154,13 @@ export default class ChartApp extends React.Component{
     render(){
         return (
             <div>
-                <ChartRouter></ChartRouter>
-                <div className="container chart" style={{ height: 800 }}>
+                <ChartRouter
+                    data={this.state.data}
+                    options={this.state.options}
+                ></ChartRouter>
+
+                
+                {/* <div className="container chart" style={{ height: 800 }}>
                     <Line ref="chart" data={this.state.data}
                         options={this.state.options}
                     />
@@ -168,7 +172,7 @@ export default class ChartApp extends React.Component{
                         // options={{ maintainAspectRatio: false }}
                         options= {this.state.options}
                     />
-                </div>				
+                </div>				 */}
             </div>
         );
     }

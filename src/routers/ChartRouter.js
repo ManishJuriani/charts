@@ -6,14 +6,14 @@ import BarChartPage from '../components/BarChartPage'
 import NotFoundPage from '../components/NotFoundPage'
 import Header from '../components/Header'
 
-const ChartRouter = ()=>(
+const ChartRouter = (props)=>(
     <BrowserRouter>
         <div>
             <Header></Header>
             <Switch>
                 <Route path="/" component={HomePage} exact={true}/>
-                <Route path="/line-chart" component={LineChartPage}/>
-                <Route path="/bar-chart" component={BarChartPage}/>
+                <Route path="/line-chart" render={()=><LineChartPage data={props.data} options={props.options}/>}/>
+                <Route path="/bar-chart" render={()=><BarChartPage data={props.data} options={props.options}/>}/>
                 <Route component={NotFoundPage}/>
             </Switch>
         </div>
